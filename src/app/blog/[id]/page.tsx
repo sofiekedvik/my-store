@@ -1,10 +1,12 @@
 import React from "react";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 
 interface Post {
   id: string;
   title: string;
   content: string;
+  category: string;
 }
 
 async function getPost(id: string) {
@@ -39,7 +41,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({
+export default async function Post({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -49,6 +51,14 @@ export default async function Page({
 
   return (
     <article>
+      <ul>
+        <li>
+          <Link href="/blog">Back</Link>
+        </li>
+        <li>
+          <Link href={`/blog/category/${post.category}`}>{post.category}</Link>
+        </li>
+      </ul>
       <h1>{post.title}</h1>
       <p>{post.content}</p>
     </article>

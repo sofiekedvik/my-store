@@ -21,9 +21,9 @@ export const metadata: Metadata = {
 function NavLinks() {
   return (
     <nav className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-      <Link href="/">Hem</Link>
-      <Link href="/blogg">Blogg</Link>
-      <Link href="/settings">Inställningar</Link>
+      <Link href="/">Home</Link>
+      <Link href="/blog">Blog</Link>
+      <Link href="/settings">Settings</Link>
     </nav>
   );
 }

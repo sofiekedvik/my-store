@@ -6,7 +6,7 @@ function Categories({ categories }) {
     <ul className="flex gap-6">
       {categories.map((category) => (
         <li key={category}>
-          <Link href={`/blogg/category/${category}`}>{category}</Link>
+          <Link href={`/blog/category/${category}`}>{category}</Link>
         </li>
       ))}
     </ul>
@@ -25,12 +25,12 @@ export default async function Posts() {
   const categories = getCategories();
   return (
     <>
-      <h1>Blogg</h1>
+      <h1>Blog</h1>
       <Categories categories={categories} />
       <ul>
         {posts.map((post) => (
           <li key={post.id}>
-            <Link href={`/blogg/${post.id}`}>{post.title}</Link>
+            <Link href={`/blog/${post.id}`}>{post.title}</Link>
           </li>
         ))}
       </ul>

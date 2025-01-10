@@ -1,4 +1,19 @@
-export default async function Categories() {
+import React from "react";
+import Link from "next/link";
+
+function Categories({ categories }) {
+  return (
+    <ul className="flex gap-6">
+      {categories.map((category) => (
+        <li key={category}>
+          <Link href={`/blogg/category/${category}`}>{category}</Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export default async function Category() {
   const data = await fetch("https://api.vercel.app/blog");
   const posts = await data.json();
 
@@ -10,7 +25,7 @@ export default async function Categories() {
   const categories = getCategories();
   return (
     <>
-      <h1>Blogg</h1>
+      <h1>Categories</h1>
       <Categories categories={categories} />
       <ul>
         {posts.map((post) => (
