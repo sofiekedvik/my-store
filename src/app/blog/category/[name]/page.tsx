@@ -15,7 +15,7 @@ export default async function Category({
       <h1>{name}</h1>
       <ul>
         {posts
-          .filter((post) => name === post.category)
+          .filter((post) => name === post.category.split(" ").join("-"))
           .map((post) => (
             <li key={post.id}>
               <Link href={`/blog/${post.id}`}>{post.title}</Link>

@@ -6,7 +6,9 @@ function Categories({ categories }) {
     <ul className="flex gap-6">
       {categories.map((category) => (
         <li key={category}>
-          <Link href={`/blog/category/${category}`}>{category}</Link>
+          <Link href={`/blog/category/${category.split(" ").join("-")}`}>
+            {category}
+          </Link>
         </li>
       ))}
     </ul>
@@ -26,7 +28,9 @@ export default async function Posts() {
   return (
     <>
       <h1>Blog</h1>
+      <h2>Categories</h2>
       <Categories categories={categories} />
+      <h2>All posts</h2>
       <ul>
         {posts.map((post) => (
           <li key={post.id}>

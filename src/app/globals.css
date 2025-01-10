@@ -26,6 +26,20 @@ h1 {
   margin-bottom: 1rem;
 }
 
+h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
 p {
   margin-bottom: 1rem;
+}
+
+a {
+  color: rgb(25, 100, 304);
+}
+
+a:hover {
+  color: rgba(25, 100, 304, 0.3);
 }
