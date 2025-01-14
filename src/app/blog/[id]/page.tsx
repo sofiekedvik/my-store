@@ -1,6 +1,7 @@
 import React from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { getCategoryUrl } from "@/helpers/category";
 
 interface Post {
   id: string;
@@ -56,7 +57,7 @@ export default async function Post({
           <Link href="/blog">Back</Link>
         </li>
         <li>
-          <Link href={`/blog/category/${post.category}`}>{post.category}</Link>
+          <Link href={`${getCategoryUrl(post.category)}`}>{post.category}</Link>
         </li>
       </ul>
       <h1>{post.title}</h1>

@@ -1,14 +1,13 @@
 import React from "react";
 import Link from "next/link";
+import { getCategoryUrl } from "@/helpers/category";
 
 function Categories({ categories }) {
   return (
     <ul className="flex gap-6">
       {categories.map((category) => (
         <li key={category}>
-          <Link href={`/blogg/category/${category.split("").join("-")}`}>
-            {category}
-          </Link>
+          <Link href={getCategoryUrl(category)}>{category}</Link>
         </li>
       ))}
     </ul>
