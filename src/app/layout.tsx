@@ -20,10 +20,10 @@ export const metadata: Metadata = {
 
 function NavLinks() {
   return (
-    <nav className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
+    <nav className="row-start-3 flex gap-6 flex-wrap items-center justify-center py-4 border-b border-t">
       <Link href="/">Home</Link>
       <Link href="/blog">Blog</Link>
-      <Link href="/settings">Settings</Link>
+      <Link href="/login">Login</Link>
     </nav>
   );
 }
@@ -42,7 +42,7 @@ export default function RootLayout({
           <header>
             <NavLinks />
           </header>
-          <div className="max-w-[1200px] mx-auto">{children}</div>
+          <div className="max-w-[1200px] mx-auto my-8">{children}</div>
           <footer>
             <NavLinks />
           </footer>
