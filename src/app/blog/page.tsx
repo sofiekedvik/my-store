@@ -4,9 +4,12 @@ import { getCategoryUrl } from "@/helpers/category";
 
 function Categories({ categories }) {
   return (
-    <ul className="flex gap-6">
+    <ul className="flex gap-6 flex-wrap mb-4">
       {categories.map((category) => (
-        <li key={category}>
+        <li
+          key={category}
+          className="p-2 border-blue-500 border rounded-md flex-[1_0_150px] text-center"
+        >
           <Link href={getCategoryUrl(category)}>{category}</Link>
         </li>
       ))}

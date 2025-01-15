@@ -1,30 +1,14 @@
 import React from "react";
-import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getCategoryUrl } from "@/helpers/category";
-
-interface Post {
-  id: string;
-  title: string;
-  content: string;
-  category: string;
-}
-
-async function getPost(id: string) {
-  const res = await fetch(`https://api.vercel.app/blog/${id}`, {
-    cache: "force-cache",
-  });
-  const post: Post = await res.json();
-  if (!post) notFound();
-  return post;
-}
+import { getPost, TPost } from "@/helpers/blog-posts";
 
 export async function generateStaticParams() {
   const posts = await fetch("https://api.vercel.app/blog", {
     cache: "force-cache",
   }).then((res) => res.json());
 
-  return posts.map((post: Post) => ({
+  return posts.map((post: TPost) => ({
     id: String(post.id),
   }));
 }
@@ -54,7 +38,7 @@ export default async function Post({
     <article>
       <ul>
         <li>
-          <Link href="/blog">Back</Link>
+          <Link href="/blog">Back to Blog</Link>
         </li>
         <li>
           <Link href={`${getCategoryUrl(post.category)}`}>{post.category}</Link>
