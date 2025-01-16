@@ -12,7 +12,7 @@ type ErrorResponse = {
 };
 
 type TPostResponse = TPost | ErrorResponse;
-type TPostsResponse = TPost[] | ErrorResponse;
+export type TPostsResponse = TPost[] | ErrorResponse;
 
 export async function getPost(id: string) {
   const res = await fetch(`https://api.vercel.app/blog/${id}`, {
