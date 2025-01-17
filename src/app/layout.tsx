@@ -29,11 +29,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <main>
-          <header>
+          <header className="max-w-[1200px] mx-auto my-8 border-b pb-4">
             <NavLinks />
           </header>
           <div className="max-w-[1200px] mx-auto my-8">{children}</div>
-          <footer>
+          <footer className="max-w-[1200px] mx-auto my-8 border-t pt-4">
             <NavLinks />
           </footer>
         </main>
