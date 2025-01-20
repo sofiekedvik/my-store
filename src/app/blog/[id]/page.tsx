@@ -3,6 +3,9 @@ import Link from "next/link";
 import { getCategoryUrl } from "@/helpers/category";
 import { getPost, TPost } from "@/helpers/blog-posts";
 
+export const revalidate = 3600; // invalidate every hour
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   const posts = await fetch("https://api.vercel.app/blog", {
     cache: "force-cache",
