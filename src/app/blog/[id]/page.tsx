@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 import { getCategoryUrl } from "@/helpers/category";
 import { getPost, TPost } from "@/helpers/blog-posts";
@@ -35,17 +35,21 @@ export default async function Post({
   const post = await getPost(id);
 
   return (
-    <article>
-      <ul>
-        <li>
-          <Link href="/blog">Back to Blog</Link>
-        </li>
-        <li>
-          <Link href={`${getCategoryUrl(post.category)}`}>{post.category}</Link>
-        </li>
-      </ul>
-      <h1>{post.title}</h1>
-      <p>{post.content}</p>
-    </article>
+    <Suspense fallback={<div>Loading...</div>}>
+      <article>
+        <ul>
+          <li>
+            <Link href="/blog">Back to Blog</Link>
+          </li>
+          <li>
+            <Link href={`${getCategoryUrl(post.category)}`}>
+              {post.category}
+            </Link>
+          </li>
+        </ul>
+        <h1>{post.title}</h1>
+        <p>{post.content}</p>
+      </article>
+    </Suspense>
   );
 }
