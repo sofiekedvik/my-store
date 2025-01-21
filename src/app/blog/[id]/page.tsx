@@ -16,11 +16,11 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
+type TPostParams = {
   params: Promise<{ id: string }>;
-}) {
+};
+
+export async function generateMetadata({ params }: TPostParams) {
   const { id } = await params;
   const post = await getPost(id);
 
@@ -29,11 +29,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function Post({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function Post({ params }: TPostParams) {
   const { id } = await params;
   const post = await getPost(id);
 
