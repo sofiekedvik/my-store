@@ -1,25 +1,6 @@
 import React from "react";
-import { executeQuery } from "@datocms/cda-client";
-import { performRequest } from "@/app/lib/datocms";
-
-const PAGE_CONTENT_QUERY = `
-  query allBlogPosts {
-    preamble
-    publishingDate
-    slug
-    title
-    content {
-      value
-    }
-  }`;
 
 export default async function Home() {
-  const result = await executeQuery("{ allBlogPosts { title } }", {
-    token: process.env.NEXT_DATOCMS_API_TOKEN,
-  });
-
-  console.log(result);
-
   return (
     <div className="">
       <h1>Welcome to my store</h1>

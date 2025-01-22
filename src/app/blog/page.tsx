@@ -1,32 +1,61 @@
 import React from "react";
 import Link from "next/link";
 import { getCategoryUrl } from "@/helpers/category";
+import { executeQuery } from "@datocms/cda-client";
 
 function Categories({ categories }) {
   return (
     <ul className="flex gap-6 flex-wrap mb-4">
       {categories.map((category) => (
-        <li
-          key={category}
-          className="p-2 border-blue-500 border rounded-md flex-[1_0_150px] text-center"
-        >
-          <Link href={getCategoryUrl(category)}>{category}</Link>
+        <li key={category.id}>
+          <Link
+            href={getCategoryUrl(category.name)}
+            className="p-2 border-blue-500 border rounded-md flex-[1_0_150px] text-center"
+          >
+            {category.name}
+          </Link>
         </li>
       ))}
     </ul>
   );
 }
 
+const PAGE_CONTENT_QUERY = `{
+  allBlogPosts {
+    id
+    preamble
+    _publishedAt
+    slug
+    title
+    category {
+      name
+      id
+    }
+    content {
+      value
+    }
+  }
+}`;
+
+const CATEGORIES_QUERY = `{
+  allCategories {
+    name
+    id
+  }
+}`;
+
 export default async function Posts() {
-  const data = await fetch("https://api.vercel.app/blog");
-  const posts = await data.json();
+  const postsData = await executeQuery(PAGE_CONTENT_QUERY, {
+    token: process.env.NEXT_DATOCMS_API_TOKEN,
+  });
 
-  const getCategories = () => {
-    const categories = posts.map((post) => post.category);
-    return Array.from(new Set(categories));
-  };
+  const categoriesData = await executeQuery(CATEGORIES_QUERY, {
+    token: process.env.NEXT_DATOCMS_API_TOKEN,
+  });
 
-  const categories = getCategories();
+  const posts = postsData["allBlogPosts"] || [];
+  const categories = categoriesData["allCategories"] || [];
+
   return (
     <>
       <h1>Blog</h1>
@@ -36,7 +65,7 @@ export default async function Posts() {
       <ul>
         {posts.map((post) => (
           <li key={post.id}>
-            <Link href={`/blog/${post.id}`}>{post.title}</Link>
+            <Link href={`/blog/${post.slug}`}>{post.title}</Link>
           </li>
         ))}
       </ul>
