@@ -23,11 +23,11 @@ export async function signIn(formData: FormData) {
   // Return early if the form data is invalid
   if (!validatedFields.success) {
     return {
-      message: validatedFields.error.flatten().fieldErrors,
+      messages: validatedFields.error.flatten().fieldErrors,
     };
   }
 
   console.log(rawFormData);
   revalidatePath("/login");
-  redirect("/settings");
+  //   redirect("/settings");
 }
