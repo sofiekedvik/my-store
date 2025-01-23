@@ -20,20 +20,11 @@ function Categories({ categories }) {
   );
 }
 
-const PAGE_CONTENT_QUERY = `{
+const ALL_BLOGPOSTS_QUERY = `{
   allBlogPosts {
     id
-    preamble
-    _publishedAt
     slug
     title
-    category {
-      name
-      id
-    }
-    content {
-      value
-    }
   }
 }`;
 
@@ -45,7 +36,7 @@ const CATEGORIES_QUERY = `{
 }`;
 
 export default async function Posts() {
-  const postsData = await executeQuery(PAGE_CONTENT_QUERY, {
+  const postsData = await executeQuery(ALL_BLOGPOSTS_QUERY, {
     token: process.env.NEXT_DATOCMS_API_TOKEN,
   });
 
