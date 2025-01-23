@@ -32,6 +32,32 @@ export default async function Post({ params }: TPostParams) {
   const { slug } = await params;
   const post = await getPost(slug);
 
+  const mapContent = (content) => {
+    return content.value.document.children.map((node) => {
+      if (node.type === "heading") {
+        if (node.level === 2) {
+          return <h2 key={node.children[0].value}>{node.children[0].value}</h2>;
+        } else {
+          return <h3 key={node.children[0].value}>{node.children[0].value}</h3>;
+        }
+      }
+      if (node.type === "paragraph") {
+        return <p key={node.children[0].value}>{node.children[0].value}</p>;
+      }
+      if (node.type === "image") {
+        return (
+          <Image
+            src={node.url}
+            width={node.width}
+            height={node.height}
+            alt={node.title || "blog post image"}
+            key={node.url}
+          />
+        );
+      }
+    });
+  };
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <article>
@@ -50,6 +76,7 @@ export default async function Post({ params }: TPostParams) {
           width={post.coverImage.width}
           height={post.coverImage.height}
           alt={post.coverImage?.title || "blog post cover image"}
+          priority={true}
         />
         <h1>{post.title}</h1>
         {post.preamble && <h2>{post.preamble}</h2>}
@@ -57,6 +84,7 @@ export default async function Post({ params }: TPostParams) {
           <span>{post.author.name}</span>
           <span>Published: {post._publishedAt}</span>
         </div>
+        {mapContent(post.content)}
         {/* <p>{post.content}</p> */}
       </article>
     </Suspense>

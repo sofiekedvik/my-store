@@ -75,8 +75,6 @@ export async function getPost(slug: string) {
     variables: { slug },
   });
 
-  console.log(postData);
-
   const post: TPost = postData["blogPost"] || {
     error: "Not found",
   };
