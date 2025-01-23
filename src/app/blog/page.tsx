@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { getCategoryUrl } from "@/helpers/category";
-import { executeQuery } from "@datocms/cda-client";
+import { getAllCategorys, getCategoryUrl } from "@/helpers/category";
+import { getPosts } from "@/helpers/blog-posts";
 
 function Categories({ categories }) {
   return (
@@ -20,32 +20,9 @@ function Categories({ categories }) {
   );
 }
 
-const ALL_BLOGPOSTS_QUERY = `{
-  allBlogPosts {
-    id
-    slug
-    title
-  }
-}`;
-
-const CATEGORIES_QUERY = `{
-  allCategories {
-    name
-    id
-  }
-}`;
-
 export default async function Posts() {
-  const postsData = await executeQuery(ALL_BLOGPOSTS_QUERY, {
-    token: process.env.NEXT_DATOCMS_API_TOKEN,
-  });
-
-  const categoriesData = await executeQuery(CATEGORIES_QUERY, {
-    token: process.env.NEXT_DATOCMS_API_TOKEN,
-  });
-
-  const posts = postsData["allBlogPosts"] || [];
-  const categories = categoriesData["allCategories"] || [];
+  const posts = await getPosts();
+  const categories = await getAllCategorys();
 
   return (
     <>

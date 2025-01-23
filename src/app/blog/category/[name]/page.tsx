@@ -3,18 +3,20 @@ import Link from "next/link";
 import { transformCategoryNameToSlug } from "@/helpers/category";
 import { notFound } from "next/navigation";
 
+import { getPosts } from "@/helpers/blog-posts";
+
 export default async function Category({
   params,
 }: {
   params: Promise<{ name: string }>;
 }) {
   const { name } = await params;
+  const posts = await getPosts();
 
-  const data = await fetch("https://api.vercel.app/blog");
-  const posts = await data.json();
-
-  const categoryPosts = posts.filter(
-    (post) => name === transformCategoryNameToSlug(post.category)
+  const categoryPosts = posts.filter((post) =>
+    post.category.find(
+      (item) => transformCategoryNameToSlug(item.name) === name
+    )
   );
 
   if (categoryPosts.length === 0) {
@@ -24,12 +26,11 @@ export default async function Category({
   return (
     <>
       <Link href={`/blog`}>Back to Blog</Link>
-
-      <h1>{categoryPosts[0]?.category}</h1>
+      <h1>{name}</h1>
       <ul>
         {categoryPosts.map((post) => (
           <li key={post.id}>
-            <Link href={`/blog/${post.id}`}>{post.title}</Link>
+            <Link href={`/blog/${post.slug}`}>{post.title}</Link>
           </li>
         ))}
       </ul>

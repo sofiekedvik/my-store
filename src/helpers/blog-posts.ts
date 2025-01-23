@@ -63,6 +63,10 @@ const ALL_BLOGPOSTS_QUERY = `{
       id
       slug
       title
+      category {
+        name
+        id
+      }
     }
   }`;
 
