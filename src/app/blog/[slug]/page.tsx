@@ -71,6 +71,7 @@ export default async function Post({ params }: TPostParams) {
             </li>
           ))}
         </ul>
+        <h1>{post.title}</h1>
         <Image
           src={post.coverImage.url}
           width={post.coverImage.width}
@@ -78,14 +79,12 @@ export default async function Post({ params }: TPostParams) {
           alt={post.coverImage?.title || "blog post cover image"}
           priority={true}
         />
-        <h1>{post.title}</h1>
         {post.preamble && <h2>{post.preamble}</h2>}
         <div className="flex gap-4 text-grey-500">
           <span>{post.author.name}</span>
           <span>Published: {post._publishedAt}</span>
         </div>
         {mapContent(post.content)}
-        {/* <p>{post.content}</p> */}
       </article>
     </Suspense>
   );
