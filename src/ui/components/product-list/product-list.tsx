@@ -1,13 +1,14 @@
 import Link from "next/link";
 
-type TProduct = {
+export type TProduct = {
   id: number;
   name: string;
   href: string;
   price: string;
   imageSrc: string;
   imageAlt: string;
-  color: string;
+  color?: string;
+  categories: Array<string>;
 };
 
 export default function ProductList({

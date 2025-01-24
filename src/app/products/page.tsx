@@ -1,4 +1,6 @@
 import React from "react";
+import ProductGrid from "@/ui/components/product-grid/product-grid";
+import { products } from "./products.constant";
 
 export default function Products() {
   return (
@@ -9,6 +11,7 @@ export default function Products() {
         laboriosam ut soluta minima. Consectetur sequi eos assumenda odio
         dolores? Atque nam odit dicta sed eius, ad impedit nulla ratione maxime.
       </p>
+      <ProductGrid products={products} />
     </div>
   );
 }

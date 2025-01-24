@@ -11,6 +11,7 @@ const products = [
     imageAlt: "Front of men's Basic Tee in black.",
     price: "$35",
     color: "Black",
+    categories: ["New Arrivals", "Tees"],
   },
   {
     id: 2,
@@ -21,6 +22,7 @@ const products = [
     imageAlt: "Front of men's Basic Tee in black.",
     price: "$30",
     color: "White",
+    categories: ["New Arrivals", "Tees"],
   },
   {
     id: 3,
@@ -31,6 +33,7 @@ const products = [
     imageAlt: "Front of men's Basic Tee in black.",
     price: "$37",
     color: "Gray",
+    categories: ["New Arrivals", "Tees"],
   },
   {
     id: 4,
@@ -41,6 +44,7 @@ const products = [
     imageAlt: "Front of men's Basic Tee in black.",
     price: "$35",
     color: "Beige",
+    categories: ["New Arrivals", "Tees"],
   },
   // More products...
 ];
@@ -57,7 +61,7 @@ export default async function Home() {
       <ProductList
         products={products}
         title="New this spring"
-        slug="/products/new-this-spring"
+        slug="/products?category=new-arrivals"
       />
     </div>
   );
