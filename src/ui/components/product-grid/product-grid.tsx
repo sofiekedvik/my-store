@@ -42,14 +42,22 @@ export default function ProductGrid({
     <div>
       <div className="bg-white">
         <h2 className="sr-only">Products</h2>
-        <div>
+        <div className="flex justify-between items-center py-6">
           {selectedCategory && (
-            <span>
+            <button
+              className="flex bg-slate-200 rounded-md p-2"
+              type="button"
+              onClick={unSelectCategory}
+            >
               {selectedCategory}{" "}
-              <button onClick={unSelectCategory}>
-                <XCircleIcon />
-              </button>
-            </span>
+              <span
+                type="button"
+                onClick={unSelectCategory}
+                className="w-6 h-6 flex items-center justify-center pl-2"
+              >
+                <XCircleIcon title="remove" />
+              </span>
+            </button>
           )}
         </div>
         {productsGrid.length ? (
