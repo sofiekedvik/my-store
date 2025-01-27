@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { TProduct } from "../product-list/product-list";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 
@@ -11,6 +11,7 @@ export default function ProductGrid({
   products: Array<TProduct>;
 }) {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const search = searchParams.get("category");
   const [productsGrid, setProductsGrid] = useState<Array<TProduct>>(products);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
@@ -49,6 +50,7 @@ export default function ProductGrid({
   const unSelectCategory = () => {
     setProductsGrid(products);
     setSelectedCategory("");
+    router.replace(`/products`, { scroll: false });
   };
 
   const handleChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -57,9 +59,12 @@ export default function ProductGrid({
       const filteredProducts = filterProducts(selectedCategory);
       setProductsGrid(filteredProducts);
       setSelectedCategory(selectedCategory);
+      router.replace(
+        `/products?category=${selectedCategory.split(" ").join("-")}`,
+        { scroll: false }
+      );
     } else {
-      setProductsGrid(products);
-      setSelectedCategory("");
+      unSelectCategory();
     }
   };
 
