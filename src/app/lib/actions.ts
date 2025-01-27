@@ -12,7 +12,8 @@ const schema = z.object({
   }),
 });
 
-export async function signIn(formData: FormData) {
+export async function signIn(prevState: any, formData: FormData) {
+  console.log("formData", formData, "prevState", prevState);
   const rawFormData = {
     username: formData.get("username"),
     password: formData.get("password"),
@@ -27,7 +28,6 @@ export async function signIn(formData: FormData) {
     };
   }
 
-  console.log(rawFormData);
-  revalidatePath("/login");
+  //   revalidatePath("/login");
   //   redirect("/settings");
 }
