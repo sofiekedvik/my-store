@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { TProduct } from "../product-list/product-list";
 import { XCircleIcon } from "@heroicons/react/24/solid";
@@ -14,7 +13,8 @@ export default function ProductGrid({
   const searchParams = useSearchParams();
   const search = searchParams.get("category");
   const [productsGrid, setProductsGrid] = useState<Array<TProduct>>(products);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [categories, setCategories] = useState<string[]>([]);
 
   const filterProducts = (selectedCategory: string) =>
     products.filter((product) =>
@@ -24,6 +24,19 @@ export default function ProductGrid({
           selectedCategory?.split("-").join(" ").toLowerCase()
       )
     );
+
+  function getAllCategorys() {
+    const categoriesproducts = products.map((product) =>
+      product.categories.map((category) => category)
+    );
+    setCategories([...new Set(categoriesproducts.flat())]);
+  }
+
+  useEffect(() => {
+    if (products) {
+      getAllCategorys();
+    }
+  }, [products]);
 
   useEffect(() => {
     if (search) {
@@ -35,29 +48,65 @@ export default function ProductGrid({
 
   const unSelectCategory = () => {
     setProductsGrid(products);
-    setSelectedCategory(null);
+    setSelectedCategory("");
+  };
+
+  const handleChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCategory = e.target.value;
+    if (selectedCategory) {
+      const filteredProducts = filterProducts(selectedCategory);
+      setProductsGrid(filteredProducts);
+      setSelectedCategory(selectedCategory);
+    } else {
+      setProductsGrid(products);
+      setSelectedCategory("");
+    }
   };
 
   return (
     <div>
       <div className="bg-white">
-        <h2 className="sr-only">Products</h2>
-        <div className="flex justify-between items-center py-6">
-          {selectedCategory && (
-            <button
-              className="flex bg-slate-200 rounded-md p-2"
-              type="button"
-              onClick={unSelectCategory}
+        <div className="flex gap-6 items-center py-6">
+          <h3 className="text-md tracking-tight text-gray-900">
+            <span className="font-bold">Products:</span>{" "}
+            <span>{productsGrid.length || 0} </span>
+          </h3>
+          <form>
+            <select
+              name="category"
+              id="category"
+              className="border border-gray-300 rounded-md p-2"
+              onChange={handleChangeCategory}
+              value={selectedCategory}
             >
-              {selectedCategory}{" "}
-              <span
+              <option value="">All</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+          </form>
+          {selectedCategory && (
+            <div className="flex gap-3 items-center">
+              <h3 className="text-md tracking-tight text-gray-900">
+                <span className="font-bold">Category:</span>{" "}
+              </h3>
+              <button
+                className="flex bg-slate-200 rounded-md p-2"
                 type="button"
                 onClick={unSelectCategory}
-                className="w-6 h-6 flex items-center justify-center pl-2"
               >
-                <XCircleIcon title="remove" />
-              </span>
-            </button>
+                {selectedCategory}{" "}
+                <span
+                  type="button"
+                  onClick={unSelectCategory}
+                  className="w-6 h-6 flex items-center justify-center pl-2"
+                >
+                  <XCircleIcon title="remove" />
+                </span>
+              </button>
+            </div>
           )}
         </div>
         {productsGrid.length ? (
