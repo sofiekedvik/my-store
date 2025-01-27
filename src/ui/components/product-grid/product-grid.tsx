@@ -1,9 +1,10 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { TProduct } from "../product-list/product-list";
-import { useEffect, useState } from "react";
+import { XCircleIcon } from "@heroicons/react/24/solid";
 
 export default function ProductGrid({
   products,
@@ -13,12 +14,14 @@ export default function ProductGrid({
   const searchParams = useSearchParams();
   const search = searchParams.get("category");
   const [productsGrid, setProductsGrid] = useState<Array<TProduct>>(products);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const filterProducts = (category: string) =>
+  const filterProducts = (selectedCategory: string) =>
     products.filter((product) =>
       product.categories.find(
-        (cat: string) =>
-          cat.toLowerCase() === category?.split("-").join(" ").toLowerCase()
+        (category: string) =>
+          category.toLowerCase() ===
+          selectedCategory?.split("-").join(" ").toLowerCase()
       )
     );
 
@@ -26,13 +29,29 @@ export default function ProductGrid({
     if (search) {
       const filteredProducts = filterProducts(search);
       setProductsGrid(filteredProducts);
+      setSelectedCategory(search);
     }
   }, [search]);
+
+  const unSelectCategory = () => {
+    setProductsGrid(products);
+    setSelectedCategory(null);
+  };
 
   return (
     <div>
       <div className="bg-white">
         <h2 className="sr-only">Products</h2>
+        <div>
+          {selectedCategory && (
+            <span>
+              {selectedCategory}{" "}
+              <button onClick={unSelectCategory}>
+                <XCircleIcon />
+              </button>
+            </span>
+          )}
+        </div>
         {productsGrid.length ? (
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
             {productsGrid.map((product) => (
