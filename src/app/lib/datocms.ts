@@ -12,7 +12,7 @@ export function performRequest(query, options) {
       {
         ...options,
         token: process.env.NEXT_DATOCMS_API_TOKEN,
-        environment: process.env.NEXT_DATOCMS_ENVIRONMENT,
+        // environment: process.env.NEXT_DATOCMS_ENVIRONMENT,
       },
     ])
   );
