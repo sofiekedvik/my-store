@@ -1,4 +1,4 @@
-import { executeQuery } from "@datocms/cda-client";
+import { performRequest } from "@/app/lib/datocms";
 
 export function getCategoryUrl(category: string): string {
   return `/blog/category/${transformCategoryNameToSlug(category)}`;
@@ -16,7 +16,7 @@ const CATEGORIES_QUERY = `{
 }`;
 
 export async function getAllCategorys() {
-  const categoriesData = await executeQuery(CATEGORIES_QUERY, {
+  const categoriesData = await performRequest(CATEGORIES_QUERY, {
     token: process.env.NEXT_DATOCMS_API_TOKEN,
   });
 

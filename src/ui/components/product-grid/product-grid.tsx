@@ -3,7 +3,11 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { TProduct } from "../product-list/product-list";
-import { XCircleIcon } from "@heroicons/react/24/solid";
+import {
+  XCircleIcon,
+  HeartIcon as HeartIconSolid,
+} from "@heroicons/react/24/solid";
+import { HeartIcon } from "@heroicons/react/24/outline";
 
 export default function ProductGrid({
   products,
@@ -16,6 +20,7 @@ export default function ProductGrid({
   const [productsGrid, setProductsGrid] = useState<Array<TProduct>>(products);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [categories, setCategories] = useState<string[]>([]);
+  const [favorites, setFavorites] = useState<Array<string | number>>([]);
 
   const filterProducts = (selectedCategory: string) =>
     products.filter((product) =>
@@ -66,6 +71,23 @@ export default function ProductGrid({
     } else {
       unSelectCategory();
     }
+  };
+
+  const isFavorite = (id: string | number) => favorites.includes(id);
+
+  const handleToggleFavorites = (id: string | number) => {
+    if (isFavorite(id)) {
+      setFavorites(favorites.filter((favorite) => favorite !== id));
+      return;
+    }
+    setFavorites([...favorites, id]);
+  };
+
+  const renderHeartIcon = (id: string | number) => {
+    if (isFavorite(id)) {
+      return <HeartIconSolid className="w-5 h-5" />;
+    }
+    return <HeartIcon className="w-5 h-5" />;
   };
 
   return (
@@ -131,6 +153,9 @@ export default function ProductGrid({
                 <p className="mt-1 text-lg font-medium text-gray-900">
                   {product.price}
                 </p>
+                <div onClick={() => handleToggleFavorites(product.id)}>
+                  {renderHeartIcon(product.id)}
+                </div>
               </a>
             ))}
           </div>
