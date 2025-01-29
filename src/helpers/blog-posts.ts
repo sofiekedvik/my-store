@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { executeQuery } from "@datocms/cda-client";
+import { performRequest } from "@/app/lib/datocms";
 
 export type TPost = {
   id: string;
@@ -74,7 +74,7 @@ type TPostResponse = { blogPost: TPost | null } | ErrorResponse;
 export type TPostsResponse = { allBlogPosts: Array<TPost> } | ErrorResponse;
 
 export async function getPost(slug: string) {
-  const postData: TPostResponse = await executeQuery(QUERY_BLOGPOST, {
+  const postData: TPostResponse = await performRequest(QUERY_BLOGPOST, {
     token: process.env.NEXT_DATOCMS_API_TOKEN,
     variables: { slug },
   });
@@ -88,7 +88,7 @@ export async function getPost(slug: string) {
 }
 
 export async function getPosts() {
-  const postsData: TPostsResponse = await executeQuery(ALL_BLOGPOSTS_QUERY, {
+  const postsData: TPostsResponse = await performRequest(ALL_BLOGPOSTS_QUERY, {
     token: process.env.NEXT_DATOCMS_API_TOKEN,
   });
 
