@@ -1,15 +1,19 @@
 import React from "react";
 import { TProduct } from "../product-list/product-list";
+import { useFavorites } from "@/hooks/useFavorites";
+import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
+import { HeartIcon } from "@heroicons/react/24/outline";
 
-export default function ProductCard({
-  product,
-  handleToggleFavorites,
-  renderHeartIcon,
-}: {
-  product: TProduct;
-  handleToggleFavorites: (id: number) => void;
-  renderHeartIcon: (id: number) => React.ReactNode;
-}) {
+export default function ProductCard({ product }: { product: TProduct }) {
+  const { toogleFavorite, isFavorite } = useFavorites();
+
+  const renderHeartIcon = (id: number) => {
+    if (isFavorite(id)) {
+      return <HeartIconSolid className="w-5 h-5 text-blue-500" />;
+    }
+    return <HeartIcon className="w-5 h-5 text-blue-500" />;
+  };
+
   return (
     <div className="group">
       <a href={product.href}>
@@ -24,7 +28,7 @@ export default function ProductCard({
         <p className="mt-1 text-lg font-medium text-gray-900">
           {product.price}
         </p>
-        <button onClick={() => handleToggleFavorites(product.id)}>
+        <button onClick={() => toogleFavorite(product.id)}>
           {renderHeartIcon(product.id)}
         </button>
       </div>

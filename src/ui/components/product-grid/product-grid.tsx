@@ -2,11 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import {
-  XCircleIcon,
-  HeartIcon as HeartIconSolid,
-} from "@heroicons/react/24/solid";
-import { HeartIcon } from "@heroicons/react/24/outline";
+import { XCircleIcon } from "@heroicons/react/24/solid";
 import ProductCard from "../product-card/product-card";
 import { TProduct } from "../product-list/product-list";
 import { useProducts } from "@/providers/products";
@@ -19,7 +15,6 @@ export default function ProductGrid({ noFilters }: { noFilters?: boolean }) {
   const [productsGrid, setProductsGrid] = useState<Array<TProduct>>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [categories, setCategories] = useState<string[]>([]);
-  const [favorites, setFavorites] = useState<Array<string | number>>([]);
 
   useEffect(() => {
     if (products) {
@@ -67,23 +62,6 @@ export default function ProductGrid({ noFilters }: { noFilters?: boolean }) {
     } else {
       unSelectCategory();
     }
-  };
-
-  const isFavorite = (id: string | number) => favorites.includes(id);
-
-  const handleToggleFavorites = (id: string | number) => {
-    if (isFavorite(id)) {
-      setFavorites(favorites.filter((favorite) => favorite !== id));
-      return;
-    }
-    setFavorites([...favorites, id]);
-  };
-
-  const renderHeartIcon = (id: string | number) => {
-    if (isFavorite(id)) {
-      return <HeartIconSolid className="w-5 h-5 text-blue-500" />;
-    }
-    return <HeartIcon className="w-5 h-5 text-blue-500" />;
   };
 
   return (
@@ -141,12 +119,7 @@ export default function ProductGrid({ noFilters }: { noFilters?: boolean }) {
         {productsGrid.length ? (
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
             {productsGrid.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                handleToggleFavorites={handleToggleFavorites}
-                renderHeartIcon={renderHeartIcon}
-              />
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         ) : (
