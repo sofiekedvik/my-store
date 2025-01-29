@@ -11,8 +11,10 @@ import { HeartIcon } from "@heroicons/react/24/outline";
 
 export default function ProductGrid({
   products,
+  noFilters,
 }: {
   products: Array<TProduct>;
+  noFilters?: boolean;
 }) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -85,78 +87,84 @@ export default function ProductGrid({
 
   const renderHeartIcon = (id: string | number) => {
     if (isFavorite(id)) {
-      return <HeartIconSolid className="w-5 h-5" />;
+      return <HeartIconSolid className="w-5 h-5 text-blue-500" />;
     }
-    return <HeartIcon className="w-5 h-5" />;
+    return <HeartIcon className="w-5 h-5 text-blue-500" />;
   };
 
   return (
     <div>
       <div className="bg-white">
-        <div className="flex gap-6 justify-between items-center py-6">
-          <div className="flex gap-6 items-center">
-            <h3 className="text-md tracking-tight text-gray-900">
-              <span className="font-bold">Products:</span>{" "}
-              <span>{productsGrid.length || 0} </span>
-            </h3>
-            <div className="flex gap-3 items-center">
+        {!noFilters && (
+          <div className="flex gap-6 justify-between items-center py-6">
+            <div className="flex gap-6 items-center">
               <h3 className="text-md tracking-tight text-gray-900">
-                <span className="font-bold">Category:</span>{" "}
+                <span className="font-bold">Products:</span>{" "}
+                <span>{productsGrid.length || 0} </span>
               </h3>
-              <form>
-                <select
-                  name="category"
-                  id="category"
-                  className="border border-gray-300 rounded-md p-2"
-                  onChange={handleChangeCategory}
-                  value={selectedCategory}
+              <div className="flex gap-3 items-center">
+                <h3 className="text-md tracking-tight text-gray-900">
+                  <span className="font-bold">Category:</span>{" "}
+                </h3>
+                <form>
+                  <select
+                    name="category"
+                    id="category"
+                    className="border border-gray-300 rounded-md p-2"
+                    onChange={handleChangeCategory}
+                    value={selectedCategory}
+                  >
+                    <option value="">All</option>
+                    {categories.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
+                </form>
+              </div>
+            </div>
+            <div>
+              <h3 className="text-md tracking-tight text-gray-900">
+                <span className="font-bold">Filters:</span>{" "}
+              </h3>
+              {!selectedCategory && <span className="text-sm">None</span>}
+              {selectedCategory && (
+                <button
+                  className="flex bg-slate-200 rounded-md p-1 text-sm"
+                  type="button"
+                  onClick={unSelectCategory}
                 >
-                  <option value="">All</option>
-                  {categories.map((category) => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-              </form>
+                  {selectedCategory}{" "}
+                  <span className="w-6 h-6 flex items-center justify-center pl-2 text-sm">
+                    <XCircleIcon title="remove" />
+                  </span>
+                </button>
+              )}
             </div>
           </div>
-          <div>
-            <h3 className="text-md tracking-tight text-gray-900">
-              <span className="font-bold">Filters:</span>{" "}
-            </h3>
-            {!selectedCategory && <span className="text-sm">None</span>}
-            {selectedCategory && (
-              <button
-                className="flex bg-slate-200 rounded-md p-1 text-sm"
-                type="button"
-                onClick={unSelectCategory}
-              >
-                {selectedCategory}{" "}
-                <span className="w-6 h-6 flex items-center justify-center pl-2 text-sm">
-                  <XCircleIcon title="remove" />
-                </span>
-              </button>
-            )}
-          </div>
-        </div>
+        )}
         {productsGrid.length ? (
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
             {productsGrid.map((product) => (
-              <a key={product.id} href={product.href} className="group">
-                <img
-                  alt={product.imageAlt}
-                  src={product.imageSrc}
-                  className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8"
-                />
+              <div className="group" key={product.id}>
+                <a href={product.href}>
+                  <img
+                    alt={product.imageAlt}
+                    src={product.imageSrc}
+                    className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8"
+                  />
+                </a>
                 <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
-                <p className="mt-1 text-lg font-medium text-gray-900">
-                  {product.price}
-                </p>
-                <div onClick={() => handleToggleFavorites(product.id)}>
-                  {renderHeartIcon(product.id)}
+                <div className="flex justify-between items-center">
+                  <p className="mt-1 text-lg font-medium text-gray-900">
+                    {product.price}
+                  </p>
+                  <button onClick={() => handleToggleFavorites(product.id)}>
+                    {renderHeartIcon(product.id)}
+                  </button>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
         ) : (
