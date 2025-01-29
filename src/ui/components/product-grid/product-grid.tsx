@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { TProduct } from "../product-list/product-list";
 import {
   XCircleIcon,
   HeartIcon as HeartIconSolid,
 } from "@heroicons/react/24/solid";
 import { HeartIcon } from "@heroicons/react/24/outline";
+import ProductCard from "../product-card/product-card";
+import { TProduct } from "../product-list/product-list";
 import { useProducts } from "@/providers/products";
 
 export default function ProductGrid({ noFilters }: { noFilters?: boolean }) {
@@ -30,12 +31,12 @@ export default function ProductGrid({ noFilters }: { noFilters?: boolean }) {
     }
   }, [products]);
 
-  const filterProducts = (selectedCategory: string) =>
+  const filterProducts = (selected: string) =>
     products.filter((product) =>
       product.categories.find(
         (category: string) =>
           category.toLowerCase() ===
-          selectedCategory?.split("-").join(" ").toLowerCase()
+          selected?.split("-").join(" ").toLowerCase()
       )
     );
 
@@ -140,24 +141,12 @@ export default function ProductGrid({ noFilters }: { noFilters?: boolean }) {
         {productsGrid.length ? (
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
             {productsGrid.map((product) => (
-              <div className="group" key={product.id}>
-                <a href={product.href}>
-                  <img
-                    alt={product.imageAlt}
-                    src={product.imageSrc}
-                    className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8"
-                  />
-                </a>
-                <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
-                <div className="flex justify-between items-center">
-                  <p className="mt-1 text-lg font-medium text-gray-900">
-                    {product.price}
-                  </p>
-                  <button onClick={() => handleToggleFavorites(product.id)}>
-                    {renderHeartIcon(product.id)}
-                  </button>
-                </div>
-              </div>
+              <ProductCard
+                key={product.id}
+                product={product}
+                handleToggleFavorites={handleToggleFavorites}
+                renderHeartIcon={renderHeartIcon}
+              />
             ))}
           </div>
         ) : (
