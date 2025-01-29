@@ -8,21 +8,27 @@ import {
   HeartIcon as HeartIconSolid,
 } from "@heroicons/react/24/solid";
 import { HeartIcon } from "@heroicons/react/24/outline";
+import { useProducts } from "@/providers/products";
 
-export default function ProductGrid({
-  products,
-  noFilters,
-}: {
-  products: Array<TProduct>;
-  noFilters?: boolean;
-}) {
+export default function ProductGrid({ noFilters }: { noFilters?: boolean }) {
   const searchParams = useSearchParams();
+  const { products } = useProducts();
   const router = useRouter();
   const search = searchParams.get("category");
-  const [productsGrid, setProductsGrid] = useState<Array<TProduct>>(products);
+  const [productsGrid, setProductsGrid] = useState<Array<TProduct>>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [categories, setCategories] = useState<string[]>([]);
   const [favorites, setFavorites] = useState<Array<string | number>>([]);
+
+  useEffect(() => {
+    if (products) {
+      setProductsGrid(products);
+      const productCategories = products.map((product) =>
+        product.categories.map((category) => category)
+      );
+      setCategories([...new Set(productCategories.flat())]);
+    }
+  }, [products]);
 
   const filterProducts = (selectedCategory: string) =>
     products.filter((product) =>
@@ -32,19 +38,6 @@ export default function ProductGrid({
           selectedCategory?.split("-").join(" ").toLowerCase()
       )
     );
-
-  function getAllCategorys() {
-    const categoriesproducts = products.map((product) =>
-      product.categories.map((category) => category)
-    );
-    setCategories([...new Set(categoriesproducts.flat())]);
-  }
-
-  useEffect(() => {
-    if (products) {
-      getAllCategorys();
-    }
-  }, [products]);
 
   useEffect(() => {
     if (search) {
@@ -100,7 +93,7 @@ export default function ProductGrid({
             <div className="flex gap-6 items-center">
               <h3 className="text-md tracking-tight text-gray-900">
                 <span className="font-bold">Products:</span>{" "}
-                <span>{productsGrid.length || 0} </span>
+                <span>{productsGrid?.length || 0} </span>
               </h3>
               <div className="flex gap-3 items-center">
                 <h3 className="text-md tracking-tight text-gray-900">
