@@ -1,13 +1,14 @@
 import React from "react";
 import Link from "next/link";
-import { getCategoryUrl } from "@/helpers/category";
+import { getPosts } from "@/helpers/blog-posts";
+import { getAllCategorys, getCategoryUrl, TCategory } from "@/helpers/category";
 
-function Categories({ categories }) {
+function Categories({ categories }: { categories: TCategory[] }) {
   return (
     <ul className="flex gap-6">
-      {categories.map((category) => (
-        <li key={category}>
-          <Link href={getCategoryUrl(category)}>{category}</Link>
+      {categories.map((category: TCategory) => (
+        <li key={category.id}>
+          <Link href={getCategoryUrl(category.name)}>{category.name}</Link>
         </li>
       ))}
     </ul>
@@ -15,15 +16,9 @@ function Categories({ categories }) {
 }
 
 export default async function Category() {
-  const data = await fetch("https://api.vercel.app/blog");
-  const posts = await data.json();
+  const posts = await getPosts();
+  const categories = await getAllCategorys();
 
-  const getCategories = () => {
-    const categories = posts.map((post) => post.category);
-    return Array.from(new Set(categories));
-  };
-
-  const categories = getCategories();
   return (
     <>
       <h1>Categories</h1>

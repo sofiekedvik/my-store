@@ -15,6 +15,11 @@ const CATEGORIES_QUERY = `{
   }
 }`;
 
+export type TCategory = {
+  name: string;
+  id: string;
+};
+
 export async function getAllCategorys() {
   const categoriesData = await performRequest(CATEGORIES_QUERY, {
     token: process.env.NEXT_DATOCMS_API_TOKEN,
